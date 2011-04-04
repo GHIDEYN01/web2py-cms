@@ -1,0 +1,9 @@
+{{extend 'layout.html'}}
+<h2>Dashboard</h2>
+<div class="bar-buttons">
+    <a class="button" href="{{=URL(f='new')}}">{{=T('New post')}}</a>
+    {{if auth.is_admin():}}
+        <a class="button" href="{{=URL(f='customize')}}">{{=T('Customize blog')}}</a>
+        <a class="button" href="{{=URL(f='manage', args='users')}}">{{=T('Manage users')}}</a>
+    {{pass}}
+</div>

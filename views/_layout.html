@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{=T.accepted_language or 'en'}}" class="no-js">
+  <head>
+
+    <!-- http://dev.w3.org/html5/markup/meta.name.html -->    
+    <meta charset="utf-8" />	  	
+    <meta name="application-name" content="{{=request.application}}" />	
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+
+    <title>{{=response.title or request.application}}</title>
+    
+    <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="{{=URL('static','favicon.ico')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{=URL('static','favicon.png')}}">
+
+    <!-- For the less-enabled mobile browsers like Opera Mini -->
+    <link rel="stylesheet" media="handheld" href="{{=URL('static','css/handheld.css')}}">
+
+    <style type = 'text/css'>
+        {{=config.css}}
+    </style> 
+
+    <style type = 'text/css' media="handheld">
+        {{=config.mobile_css}}
+    </style> 
+   
+    {{#response.files.append(URL('static','css/base.css'))}}
+    {{include 'web2py_ajax.html'}}
+
+  </head>
+  
+    <body>
+
+        <div class="header">
+            <h1 class="title"><a href="{{=URL(c='default', f='index')}}">{{=BLOG_NAME}}</h1>
+      	    {{=MENU(response.menu,_class='menu')}}
+        </div>
+            
+        <div class="body">
+            
+            {{if response.flash:}}
+                <div class="flash_message">
+                    {{=response.flash}}
+                </div>
+            {{pass}}
+
+    	    {{include}}	
+        </div>
+
+        <div class="footer">
+            <div class="menus">
+                <div class="menu archive">
+                    <h3>Arquivo</h3>
+                    <ul>
+                        <li><a href="#">2011-03</a></li>
+                        <li><a href="#">2011-02</a></li>
+                        <li><a href="#">2011-01</a></li>
+                        <li><a href="#">2010-12</a></li>
+                    </ul>
+                </div>
+
+                <div class="menu suggestions">
+                    <h3>Sugestões</h3>
+                    <ul class="suggestions">
+                        <li><a href="#">suggestion 1</a></li>
+                        <li><a href="#">suggestion 2</a></li>
+                        <li><a href="#">suggestion 3</a></li>
+                        <li><a href="#">suggestion 4</a></li>
+                    </ul>
+                </div>
+
+                <div class="menu last_posts">
+                    <h3>Ultimos posts</h3>
+                    <ul class="last_posts">
+                        <li><a href="#">last 1</a></li>
+                        <li><a href="#">last 2</a></li>
+                        <li><a href="#">last 3</a></li>
+                        <li><a href="#">last 4</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="copyright">{{=T('Copyright')}} &#169; {{=request.now.year}} - Lucas D'Avila, todos os direitos reservados.</p>
+        </div>
+    </body>
+</html>

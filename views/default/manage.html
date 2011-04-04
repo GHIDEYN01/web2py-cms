@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+
+{{if request.args(0) == 'users':}}
+    <h2>Admins</h2>
+    {{=admins}} #TODO list admins (add button revoke)
+    
+    <h2>Authors</h2>
+    {{=authors}} #TODO list authors (add button revoke)
+
+    <h2>Users</h2>
+    {{=users}} #TODO list users  (add button give permission admin / author)
+{{pass}}
+
+<p><a href='{{=URL(f='dashboard')}}'>Back</a></p>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="{{=T.accepted_language or 'en'}}" class="no-js">
+  <head>
+
+    <!-- http://dev.w3.org/html5/markup/meta.name.html -->    
+    <meta charset="utf-8" />	  	
+    <meta name="application-name" content="{{=request.application}}" />	
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+
+    <title>{{=response.title or request.application}}</title>
+    
+    <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="{{=URL('static','favicon.ico')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{=URL('static','favicon.png')}}">
+
+    <!-- For the less-enabled mobile browsers like Opera Mini -->
+    <link rel="stylesheet" media="handheld" href="{{=URL('static','css/handheld.css')}}">
+
+    {{if config.css:}}
+    <style type = 'text/css'>
+        {{=XML(config.css)}}
+    </style> 
+    {{else:}}
+        {{response.files.append(URL('static','css/style.css'))}}
+    {{pass}}
+
+    {{if config.mobile_css:}}
+        <style type = 'text/css' media="handheld">
+            {{=XML(config.mobile_css)}}
+        </style> 
+    {{pass}}
+   
+    {{include 'web2py_ajax.html'}}
+
+  </head>
+  
+    <body>
+        <p><a href="http://github.com/lucasdavila"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a></p>
+        <div id="header">
+            <div id="hbody">
+                <a class="title" href="{{=URL_INDEX_PAGE}}">{{=BLOG_NAME}}</a>
+                {{=MENU(response.menu,_class='menu')}}
+            </div>
+        </div>
+            
+        <div id="body">
+            
+            <div class="flash_message">
+                {{if response.flash:}}
+                    <p>{{=response.flash}}</p>
+                {{pass}}
+            </div>
+
+    	    {{include}}	
+        </div>
+
+        <div id="footer">
+            <div id="fbody">
+                <div id="menus">
+                    <div class="menu archive">
+                        <h3>Arquivo</h3>
+                        <ul>
+                            <li><a href="#">#TODO</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="menu suggestions">
+                        <h3>Sugestões</h3>
+                        <ul class="suggestions">
+                            <li><a href="#">#TODO</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="menu last_posts">
+                        <h3>Ultimos posts</h3>
+                        <ul class="last_posts">
+                            {{for p in get_last_posts():}}
+                                <li><a href="{{=URL(c='default', f='post', args=p.permalink)}}">{{=p.title}}</a></li>
+                            {{pass}}
+                        </ul>
+                    </div>
+                </div>
+                <p class="copyright">{{=T('Copyright')}} &#169; {{=request.now.year}} - Lucas D'Avila, todos os direitos reservados.</p>
+            </div>
+        </div>
+    </body>
+</html>

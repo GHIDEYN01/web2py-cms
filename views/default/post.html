@@ -1,0 +1,72 @@
+{{extend 'layout.html'}}
+<div class="post">
+            <div class="title">
+                <h1>{{=post.title}}</h1>                    
+                    {{name = '%s'%('%s %s'%(post.posted_by.first_name, post.posted_by.last_name))}}
+                    {{site = get_external_url(post.posted_by.site if post.posted_by else '#')}}
+                    {{email = post.posted_by.email}}
+                    <p class="details">                        
+                        <img src='{{=Gravatar(email, size=32).thumb}}' />
+                        <span>
+                            {{if site:}}<a href="{{=site}}">{{=name}}</a>{{else:}}{{=name}}{{pass}}
+                            {{='%s %s'%(post.datetime.date().strftime(T('%Y-%m-%d').xml()),post.datetime.time().strftime(T('%H:%M:%S').xml()))}}
+                        </span>
+                    </p>
+
+            </div>
+    {{if auth.is_author():}}
+        <a class="edit" href="{{=URL(f='edit', args=('post', post.permalink))}}">Edit</a>
+    {{pass}}
+    <p class="post-text">{{=XML(post.post.replace('\n','<br />'))}}</p>
+
+<div class="comments">
+    <h2>Comments</h2>
+    <div class="new">
+        {{=form_new_comment}}
+            <p class="moderation">{{if config.comments_require_approval:}}- Novos comentários serão exibidos após aprovação, comentários que não agregem valor ao blog (como ataques), poderão não ser exibidos.{{pass}}
+            <br />- {{=T('Your email will not be published or used for sending spam')}}, <a href="http://pt.gravatar.com/site/signup/">{{=T('not have an avatar?')}}</a></p>
+    </div>
+    {{zebra = 1}}
+    {{for c in comments:}}
+        {{if(not auth.is_logged_in() and c.status == 'A') or auth.is_logged_in():}}
+        {{zebra = 0 if zebra else 1}}
+            <div class="comment{{='%s'%' zebra' if zebra else ''}}">
+                    {{name = '%s'%('%s %s'%(c.commented_by.first_name, c.commented_by.last_name) if c.commented_by else c.unregistered_user_name)}}
+                    {{site = get_external_url(c.commented_by.site if c.commented_by else c.unregistered_user_site)}}
+                    {{email = c.commented_by.email if c.commented_by else c.unregistered_user_email}}
+                <img class="avatar" src='{{=Gravatar(email).thumb}}' />                    
+                <p>
+                    <strong>
+                        {{if site:}}
+                            <a href="{{=site}}">{{=name}}</a>
+                        {{else:}}
+                            {{=name}}
+                        {{pass}}
+                    </strong>{{=T('says:')}}                    
+                    <spam class="detail">
+                        {{=T('%s %s'%(c.datetime.date().strftime(T('%Y-%m-%d').xml()),c.datetime.time().strftime(T('%H:%M:%S').xml())))}}
+                    {{if auth.is_author():}}
+                        {{if c.status == 'W':}}
+                            ({{=T('Aguardando aprovação')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Aprovar')}}</a> ou <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
+                            {{elif c.status == 'S':}}
+                                ({{=T('Reportado como spam')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Desbloquear')}}</a>
+                            {{elif c.status != 'S':}}
+                                <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
+                            {{pass}}
+                        {{pass}}
+                    </spam>
+                </p>
+                <p class="text">
+                    {{=XML(c.comment.replace('\n','<br />'))}}
+                </p>
+            </div>
+        {{pass}}
+    {{pass}}
+    {{if not comments:}}
+        Sem comentários, seja o primeiro a comentar!
+    {{pass}}
+    
+</div>
+
+</div>
+

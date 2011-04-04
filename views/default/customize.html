@@ -1,0 +1,51 @@
+{{extend 'layout.html'}}
+
+<h2>{{=T('Blog settings')}}</h2>
+{{=form_config}}
+
+<h2>Menus</h2>
+<table class="styled horizontal-expand">
+    <tr>
+        <th>Name</th>
+        <th>Link to</th>
+        <th>Action</th>
+    </tr>
+{{for m in menus:}}
+    <tr>
+        <td>{{=m.name}}</td>
+        <td><a href="{{=m.link_to if m.link_to else '#'}}">{{=m.link_to if m.link_to else ''}}</a></td>
+        <td><a href='{{=URL(f='menu', args=('edit',m.id))}}'>Edit</a> <a href='{{=URL(f='menu', args=('delete',m.id))}}'>Delete</a></td>
+    </tr>
+{{pass}}
+</table>
+
+<div class="bar-buttons">
+    <a class="button" href="{{=URL(f='menu', args='new')}}">New menu</a>    
+</div>
+
+
+<h2>Pages</h2>
+<table class="styled horizontal-expand">
+    <tr>
+        <th>Url</th>
+        <th>Use default layout</th>
+        <th>Title</th>
+        <th>Body</th>
+        <th>Action</th>
+    </tr>
+{{for p in pages:}}
+    <tr>
+        <td><a href="{{=get_full_url_page(page=p)}}">{{=get_full_url_page(page=p, default = '')}}</a></td>
+        <td>{{=p.use_default_layout}}</td>
+        <td>{{=p.title}}</td>
+        <td>{{=p.body}}</td>        
+        <td><a href='{{=URL(f='page', args=('edit',p.id))}}'>Edit</a> <a href='{{=URL(f='page', args=('delete',p.id))}}'>Delete</a> <a href='{{=URL(f='page', args=('create_menu', p.id))}}'>Create menu</a></td>
+    </tr>
+{{pass}}
+</table>
+
+<div class="bar-buttons">
+    <a class="button" href="{{=URL(f='page', args='new')}}">New page</a>
+</div>
+
+

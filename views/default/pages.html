@@ -1,0 +1,8 @@
+{{extend 'layout.html'}}
+
+<h2>{{=page.title}}</h2>
+{{=page.body}}
+
+{{if request.vars.back:}}
+    <p><a href="{{=request.vars.back}}">{{="Back"}}</a></p>
+{{pass}}

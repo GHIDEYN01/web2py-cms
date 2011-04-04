@@ -1,0 +1,15 @@
+.hgignore
+*.pyc
+*.bak
+*.1
+/databases
+/cache
+/errors
+/sessions
+.project
+.pydevproject
+.hg
+.hg/*.*
+.hg/*
+/static/css/style.css
+

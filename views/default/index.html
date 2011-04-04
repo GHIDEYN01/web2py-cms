@@ -1,0 +1,26 @@
+{{extend 'layout.html'}}
+
+<div class="posts">
+    {{for p in posts:}}
+        <div class="post">
+            <div class="title">
+                <h2><a href="{{=URL(f='post', args=[p.permalink])}}">{{=p.title}}</a></h2>                    
+                    {{name = '%s'%('%s %s'%(p.posted_by.first_name, p.posted_by.last_name))}}
+                    {{site = get_external_url(p.posted_by.site if p.posted_by else '#')}}
+                    {{email = p.posted_by.email}}
+                    <p class="details">                        
+                        <img src='{{=Gravatar(email, size=32).thumb}}' />
+                        <span>
+                            {{if site:}}<a href="{{=site}}">{{=name}}</a>{{else:}}{{=name}}{{pass}}
+                            {{='%s %s'%(p.datetime.date().strftime(T('%Y-%m-%d').xml()),p.datetime.time().strftime(T('%H:%M:%S').xml()))}}
+                        </span>
+                    </p>
+
+            </div>
+            {{if auth.is_logged_in():}}
+                <a class="edit" href="{{=URL(f='edit', args=('post',p.permalink))}}">Edit</a>
+            {{pass}}
+            <p class="post_text">{{=XML(p.post.replace('\n','<br />'))}}</p>
+        </div>
+    {{pass}}
+</div>

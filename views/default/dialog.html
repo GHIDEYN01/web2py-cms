@@ -1,0 +1,7 @@
+{{extend 'layout.html'}}
+
+<h2>{{=request.vars.message}}</h2>
+<p>
+    <a class="positive" href="{{=request.vars.next}}">{{=request.vars.positive_option}}</a>
+    <a class="negative" href="{{=request.vars.back}}">{{=request.vars.negative_option}}</a>
+</p>

@@ -1,0 +1,9 @@
+{{extend 'layout.html'}}
+
+<h2>{{=T('New %s '%(request.function if request.function != 'new' else request.args(0) or 'post'))}}</h2>
+
+{{=form}}
+
+{{if request.vars.back:}}
+    <p><a href="{{=request.vars.back}}">{{="Back"}}</a></p>
+{{pass}}
