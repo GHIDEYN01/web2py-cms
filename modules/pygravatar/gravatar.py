@@ -15,7 +15,7 @@ except ImportError:
     try:
         import simplejson as json
     except ImportError:
-        from django.utils import simplejson as json
+        from gluon.contrib import simplejson as json
 
 BASE_URL        = 'http://www.gravatar.com/avatar/'
 SECURE_BASE_URL = 'https://secure.gravatar.com/avatar/'
