@@ -44,7 +44,7 @@
                         {{pass}}
                     </strong>{{=T('says:')}}                    
                     <spam class="detail">
-                        {{=T('%s %s'%(c.datetime.date().strftime(T('%Y-%m-%d').xml()),c.datetime.time().strftime(T('%H:%M:%S').xml())))}}
+                        {{='%s %s'%(c.datetime.date().strftime(T('%Y-%m-%d').xml()),c.datetime.time().strftime(T('%H:%M:%S').xml()))}}
                     {{if auth.is_author():}}
                         {{if c.status == 'W':}}
                             ({{=T('Aguardando aprovação')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Aprovar')}}</a> ou <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
