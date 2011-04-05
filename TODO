@@ -1,2 +1,4 @@
-rss feeds
-integração dos comentários com http://disqus.com/
+- separar / criar estilo css basico para as páginas de administração (aka dashboard) ?
+- rss feeds
+- integração dos comentários com http://disqus.com/
+- incluir campo num_comments, na tabela post, para evitar counts na tabela comments
