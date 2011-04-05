@@ -27,7 +27,8 @@ def post():
     if auth.is_logged_in():
         t_post_comment.commented_by.default = auth.user_id
     crud_post_comment.settings.formstyle='divs'
-    crud_post_comment.settings.create_onaccept = lambda form_c:mail.send(to=config.admin_email, subject=T('New comment on post %s')%post.title, message='Comment: %s '%form_c.vars.comment)
+    if config.email_new_comments:
+        crud_post_comment.settings.create_onaccept = lambda form_c:mail.send(to=config.admin_email, subject=T('New comment on post %s')%post.title, message='Comment: %s '%form_c.vars.comment)
     form_new_comment = crud_post_comment.create(t_post_comment)
     comments = post.post_comment.select()
     return dict(post=post, comments = comments, form_new_comment = form_new_comment)

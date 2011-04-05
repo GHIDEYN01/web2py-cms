@@ -120,7 +120,7 @@ auth.define_tables(username=False)
 t_config = db.define_table('config',
     Field('blog_name', default = 'Bloog'),
     Field('admin_email'),
-    Field('email_new_comments', 'boolean', default = True, label='Email notification for new comments'),
+    Field('email_new_comments', 'boolean', default=True, label='Email notification for new comments'),
     Field('comments_require_approval', 'boolean', default=True),
     Field('enable_contact_page', 'boolean', default=True),    
     Field('show_menu_login', 'boolean', default='True'),
