@@ -53,8 +53,8 @@
                         {{elif c.status != 'S':}}
                                 <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
                         {{pass}}
-                    {{pass}}
                     <a href='{{=URL(f='delete', args=('comment',c.id))}}'>{{=T('Delete')}}</a>
+                    {{pass}}
                     </spam>
                 </p>
                 <p class="text">
