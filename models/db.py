@@ -50,8 +50,12 @@ crud = Crud(globals(),db)                      # for CRUD helpers using auth
 service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()
 
-mail.settings.server = 'logging' or 'gae' #TODO pegar do config
-mail.settings.sender = 'lucas@lucasdavi.la'#TODO pegar do config
+if not request.env.web2py_runtime_gae:
+    mail.settings.server = 'logging'
+    mail.settings.tls = True
+    mail.settings.login = 'youremail@site.com:pass'
+else:
+    mail.settings.server = 'gae'
 
 auth.settings.hmac_key = 'sha512:09b3128b-337c-43ae-9f04-181b948a7004'   # before define_tables()
 auth.settings.mailer = mail                    # for user email verification
@@ -98,12 +102,7 @@ crud.settings.auth = None                      # =auth to enforce authorization 
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
-BLOG_NAME = "Lucas D'Avila"
 URL_INDEX_PAGE = URL(c='default', f='index')
-CONTACT_EMAIL = 'lucassdvl@gmail.com'
-ADMIN_EMAIL = CONTACT_EMAIL 
-#TODO guardar o valor destas variaveis na tabela config
-#TODO se não configurado pela 1º vez, redirecionar para criar usuário admim e setar configurações iniciais.
 
 auth.settings.table_user_name = 'auth_user'
 t_user = db.define_table(auth.settings.table_user_name,
@@ -119,6 +118,9 @@ t_user = db.define_table(auth.settings.table_user_name,
 auth.define_tables(username=False)
 
 t_config = db.define_table('config',
+    Field('blog_name', default = 'Bloog'),
+    Field('admin_email'),
+    Field('email_new_comments', 'boolean', default = True, label='Email notification for new comments'),
     Field('comments_require_approval', 'boolean', default=True),
     Field('enable_contact_page', 'boolean', default=True),    
     Field('show_menu_login', 'boolean', default='True'),
@@ -127,6 +129,13 @@ t_config = db.define_table('config',
     Field('mobile_css', 'text', default=""),
     Field('css', 'text', default=""))
 config = get_config(config_table = t_config)
+
+mail.settings.sender = config.admin_email
+
+#TODO alterar referencias a estas variaveis para o objeto config
+BLOG_NAME = config.blog_name
+CONTACT_EMAIL = config.admin_email
+ADMIN_EMAIL = CONTACT_EMAIL 
 
 t_menu = db.define_table('menu',
     Field('name'),

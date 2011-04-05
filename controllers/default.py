@@ -27,6 +27,7 @@ def post():
     if auth.is_logged_in():
         t_post_comment.commented_by.default = auth.user_id
     crud_post_comment.settings.formstyle='divs'
+    crud_post_comment.settings.create_onaccept = lambda form_c:mail.send(to=config.admin_email, subject=T('New comment on post %s')%post.title, message='Comment: %s '%form_c.vars.comment)
     form_new_comment = crud_post_comment.create(t_post_comment)
     comments = post.post_comment.select()
     return dict(post=post, comments = comments, form_new_comment = form_new_comment)
@@ -134,9 +135,22 @@ def edit():
             session.flash = crud_post_comment.messages.record_updated
             redirect(URL(f='post', args=comment.post.permalink))
 
+
+@auth.requires_membership('author')
+def delete():
+    arg = request.args(0) or redirect(URL_INDEX_PAGE)
+    if arg == 'comment':
+        comment = t_post_comment[request.args(1)] or redirect(URL_INDEX_PAGE)
+        if request.args(2) != 'yes':
+            get_confirmation_user(message = 'Delete this comment ?', back=URL(f='post', args=comment.post.permalink), next=URL(args=('comment', \
+                comment.id, 'yes')))
+        crud_post_comment.settings.delete_next = URL(f='post', args=comment.post.permalink)
+        crud_post_comment.delete(t_post_comment, comment.id)
+
+
 @auth.requires_membership('admin')
 def menu():
-    arg = request.args(0)
+    arg = request.args(0) or redirect(URL_INDEX_PAGE)
     response.view = '%s/%s.%s'%('default', arg, request.extension)
     if arg == 'new':
         form = crud_menu.create(t_menu)
@@ -158,7 +172,7 @@ def menu():
 
 @auth.requires_membership('admin')
 def page():
-    arg = request.args(0)
+    arg = request.args(0) or redirect(URL_INDEX_PAGE)
     response.view = '%s/%s.%s'%('default', arg, request.extension)
 
     if arg == 'new':

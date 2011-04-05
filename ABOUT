@@ -1,2 +1,11 @@
-Write something about this app.
-Developed with web2py.
+Boog é um blog e micro cms,
+você pode criar posts, páginas, e links de navegação no menu.
+
+Bloog roda no GAE (google app engine) e é licenciado sobre a LGPL v3 veja o documento LICENSE
+
+--
+
+Boog is a blog and micro cms,
+you can create posts, pages, and navigation links on the menu.
+
+Bloog runs on GAE (google app engine) and is Licensed under the LGPL v3 see the document LICENSE

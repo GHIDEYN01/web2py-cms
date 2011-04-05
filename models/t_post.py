@@ -45,6 +45,7 @@ def set_permalink(post_id):
 
 
 def get_permalink(args):
+    if len(args) < 4: redirect(URL_INDEX_PAGE)
     return '%s/%s/%s/%s'%(args[0],args[1],args[2],args[3],)
 
 

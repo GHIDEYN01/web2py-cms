@@ -21,6 +21,7 @@
                 <a class="edit" href="{{=URL(f='edit', args=('post',p.permalink))}}">Edit</a>
             {{pass}}
             <p class="post_text">{{=XML(p.post.replace('\n','<br />'))}}</p>
+            <p class="num_comments"><a href="{{=URL(f='post', args=[p.permalink])}}#comments">{{=p.post_comment(t_post_comment.status == 'A').count()}} Comments</a></p>
         </div>
     {{pass}}
 </div>

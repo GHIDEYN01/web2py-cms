@@ -24,3 +24,5 @@ crud_config.settings.update_next = URL(f='dashboard')
 
 #restrictions
 
+t_config.blog_name.requires = IS_NOT_EMPTY()
+t_config.admin_email.requires = IS_EMPTY_OR(IS_EMAIL())

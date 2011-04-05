@@ -19,7 +19,7 @@
     {{pass}}
     <p class="post-text">{{=XML(post.post.replace('\n','<br />'))}}</p>
 
-<div class="comments">
+<div id="comments" class="comments">
     <h2>Comments</h2>
     <div class="new">
         {{=form_new_comment}}
@@ -48,12 +48,13 @@
                     {{if auth.is_author():}}
                         {{if c.status == 'W':}}
                             ({{=T('Aguardando aprovação')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Aprovar')}}</a> ou <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
-                            {{elif c.status == 'S':}}
-                                ({{=T('Reportado como spam')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Desbloquear')}}</a>
-                            {{elif c.status != 'S':}}
+                        {{elif c.status == 'S':}}
+                            ({{=T('Reportado como spam')}}) <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='approved'))}}">{{=T('Desbloquear')}}</a>
+                        {{elif c.status != 'S':}}
                                 <a href="{{=URL(f='edit', args=('comment', c.id), vars=dict(new_status='spam'))}}">{{=T('Reportar spam')}}</a>
-                            {{pass}}
                         {{pass}}
+                    {{pass}}
+                    <a href='{{=URL(f='delete', args=('comment',c.id))}}'>{{=T('Delete')}}</a>
                     </spam>
                 </p>
                 <p class="text">
