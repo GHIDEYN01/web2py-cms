@@ -1,27 +1,50 @@
 {{extend 'layout.html'}}
 
 <div class="posts">
-    {{for p in posts:}}
-        <div class="post">
-            <div class="title">
-                <h2><a href="{{=URL(f='post', args=[p.permalink])}}">{{=p.title}}</a></h2>                    
-                    {{name = '%s'%('%s %s'%(p.posted_by.first_name, p.posted_by.last_name))}}
-                    {{site = get_external_url(p.posted_by.site if p.posted_by else '#')}}
-                    {{email = p.posted_by.email}}
-                    <p class="details">                        
-                        <img src='{{=Gravatar(email, size=32).thumb}}' />
-                        <span>
-                            {{if site:}}<a href="{{=site}}">{{=name}}</a>{{else:}}{{=name}}{{pass}}
-                            {{='%s %s'%(p.datetime.date().strftime(T('%Y-%m-%d').xml()),p.datetime.time().strftime(T('%H:%M:%S').xml()))}}
-                        </span>
-                    </p>
 
-            </div>
-            {{if auth.is_logged_in():}}
-                <a class="edit" href="{{=URL(f='edit', args=('post',p.permalink))}}">Edit</a>
-            {{pass}}
-            <p class="post_text">{{=XML(p.post.replace('\n','<br />'))}}</p>
-            <p class="num_comments"><a href="{{=URL(f='post', args=[p.permalink])}}#comments">{{=p.post_comment(t_post_comment.status == 'A').count()}} Comments</a></p>
+    {{if not posts:}}
+        <div class="wellcome">
+            <h1>Bem vindo ao <a href="https://github.com/lucasdavila/blog.lucasdavi.la/">Bloog</a></h1>
+            <p>
+                Bloog é um blog e micro cms, você pode criar posts, páginas, e links de navegação no menu.<br />
+                Bloog roda no <a href="appengine.google.com/">GAE</a> (google app engine) e é licenciado sobre a LGPL v3.
+            </p>
+            <br />
+            <ol>
+                <li>Inicie <a href="https://github.com/lucasdavila/blog.lucasdavi.la/wiki">lendo a wiki</a></li>
+                <li><a href="{{=URL(f='user', args='register')}}">Registre</a> o 1º usuário, para ganhar permissões de administrador e autor</li>
+                <li><strong>Adicione estilo</strong>, no arquivo '/applications/nome_app/static/css/example.style.css'</li>
+                <li><a href="http://www.youtube.com/watch?v=YZTG2IBMXeU">Publique</a> seu novo blog no Google App Engine</li>
+                <li><a href="https://github.com/lucasdavila/blog.lucasdavi.la/">Contribua</a> com o projeto</li>
+            </ol>
+            <br />
+            <p><strong>Para não exibir mais estas instruções</strong>, faça <a href="{{=URL(f='user', args='login')}}">login</a> e <a href="{{=URL(f='new')}}">crie</a> seu 1º post, ou edite a view 'index.html'</p>
         </div>
+        
+    {{else:}}
+
+        {{for p in posts:}}
+            <div class="post">
+                <div class="title">
+                    <h2><a href="{{=URL(f='post', args=[p.permalink])}}">{{=p.title}}</a></h2>                    
+                        {{name = '%s'%('%s %s'%(p.posted_by.first_name, p.posted_by.last_name))}}
+                        {{site = get_external_url(p.posted_by.site if p.posted_by else '#')}}
+                        {{email = p.posted_by.email}}
+                        <p class="details">                        
+                            <img src='{{=Gravatar(email, size=32).thumb}}' />
+                            <span>
+                                {{if site:}}<a href="{{=site}}">{{=name}}</a>{{else:}}{{=name}}{{pass}}
+                                {{='%s %s'%(p.datetime.date().strftime(T('%Y-%m-%d').xml()),p.datetime.time().strftime(T('%H:%M:%S').xml()))}}
+                            </span>
+                        </p>
+
+                </div>
+                {{if auth.is_logged_in():}}
+                    <a class="edit" href="{{=URL(f='edit', args=('post',p.permalink))}}">Edit</a>
+                {{pass}}
+                <p class="post_text">{{=XML(p.post.replace('\n','<br />'))}}</p>
+                <p class="num_comments"><a href="{{=URL(f='post', args=[p.permalink])}}#comments">{{=p.post_comment(t_post_comment.status == 'A').count()}} Comments</a></p>
+            </div>
+        {{pass}}
     {{pass}}
 </div>

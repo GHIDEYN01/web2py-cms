@@ -17,7 +17,7 @@
     {{if auth.is_author():}}
         <a class="edit" href="{{=URL(f='edit', args=('post', post.permalink))}}">Edit</a>
     {{pass}}
-    <p class="post-text">{{=XML(post.post.replace('\n','<br />'))}}</p>
+    <p class="post_text">{{=XML(post.post.replace('\n','<br />'))}}</p>
 
 <div id="comments" class="comments">
     <h2>Comments</h2>

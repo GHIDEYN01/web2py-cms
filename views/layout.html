@@ -8,19 +8,18 @@
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
 
     <title>{{=response.title or request.application}}</title>
-    
+
+    <!-- TODO pegar do config.favicon-->    
     <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
-    <link rel="shortcut icon" href="{{=URL('static','favicon.ico')}}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{=URL('static','favicon.png')}}">
+    <!--link rel="shortcut icon" href="{{#=URL('static','favicon.ico')}}" type="image/x-icon"-->
+    <!--link rel="apple-touch-icon" href="{{#=URL('static','favicon.png')}}"-->
 
-    <!-- For the less-enabled mobile browsers like Opera Mini -->
-    <link rel="stylesheet" media="handheld" href="{{=URL('static','css/handheld.css')}}">
-
-    {{if config.css:}}
-    <style type = 'text/css'>
-        {{=XML(config.css)}}
-    </style> 
+   {{if config.css:}}
+        <style type = 'text/css'>
+            {{=XML(config.css)}}
+        </style> 
     {{else:}}
+        {{response.files.append(URL('static','css/example.style.css'))}}
         {{response.files.append(URL('static','css/style.css'))}}
     {{pass}}
 
@@ -35,7 +34,7 @@
   </head>
   
     <body>
-        <p id="forkme"><a href="https://github.com/lucasdavila/blog.lucasdavi.la"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a></p>
+        <p id="forkme"><a href="https://github.com/lucasdavila/blog.lucasdavi.la"><img src="https://d3nwyuy0nl342s.cloudfront.net/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a></p>
         <div id="header">
             <div id="hbody">
                 <a class="title" href="{{=URL_INDEX_PAGE}}">{{=BLOG_NAME}}</a>

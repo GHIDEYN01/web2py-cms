@@ -150,6 +150,9 @@ h1, h2, h3, h4, h5, h6, table > caption {
     list-style: none;
 }
 
+#body .wellcome a {
+    color: #0eab0e;
+}
 
 #footer {
     margin-top: 50px;
