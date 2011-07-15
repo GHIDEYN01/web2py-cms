@@ -20,6 +20,7 @@ along with web2py-cms.  If not, see <http://www.gnu.org/licenses/>.
 
 def index():
     posts = t_post._db(t_post.id>0).select(orderby=~t_post.datetime)
+
     return dict(posts = posts)
 
 def post():
@@ -32,6 +33,7 @@ def post():
         crud_post_comment.settings.create_onaccept = lambda form_c:mail.send(to=config.admin_email, subject=T('New comment on post %s')%post.title, message='Comment: %s '%form_c.vars.comment)
     form_new_comment = crud_post_comment.create(t_post_comment)
     comments = post.post_comment.select()
+
     return dict(post=post, comments = comments, form_new_comment = form_new_comment)
 
 
@@ -66,12 +68,14 @@ def contact():
                 redirect(URL_INDEX_PAGE)
             else:
                 response.flash=T('Ops! We cannot send your message :(, please try again later.')    
+
     return dict(form = form)
 
 def user():
     if not t_user._db(t_user.id>0).select().first():
         auth.settings.register_onaccept.append(lambda auth_form:__give_permission(role='admin', user_id=auth_form.vars.id))
         auth.settings.register_onaccept.append(lambda auth_form:__give_permission(role='author', user_id=auth_form.vars.id))
+
     return dict(form = auth())
 
 
@@ -82,6 +86,7 @@ def manage():
         authors = None #TODO select usuários com papel author
         admins = None #TODO select usuários com papel admin
         users = None #TODO select usuários sem papel author e admin
+
         return dict(authors = authors, admins = admins, users = users)
     
 
@@ -98,22 +103,13 @@ def customize():
     pages = t_page._db(t_page.id>0).select()
     return dict(form_config = form_config, menus = menus, pages = pages)
 
-#def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-#    return response.download(request,db)
-
 
 @auth.requires_membership('author')
 def new():
 
     t_post.posted_by.readable = False
     form = crud_post.create(t_post, onaccept=lambda form:set_permalink(form.vars.id))
-#    if form.accepts(request.vars, session):
-#        set_permalink(form.vars.id)
-#        redirect(crud_post.settings.create_next)
+
     return dict(form = form)
 
 
@@ -124,6 +120,7 @@ def edit():
         post = get_post(args = request.args[1:])    
         t_post.posted_by.readable = False
         form = crud_post.update(t_post, post)
+
         return dict(form = form)    
     elif arg == 'comment':    
         comment_id = request.args(1) or redirect(URL_INDEX_PAGE)
@@ -156,11 +153,13 @@ def menu():
     response.view = '%s/%s.%s'%('default', arg, request.extension)
     if arg == 'new':
         form = crud_menu.create(t_menu)
+
         return dict(form = form)
 
     elif arg == 'edit':
         menu_id = request.args(1) or redirect(URL_INDEX_PAGE)
         form = crud_menu.update(t_menu, menu_id, deletable=False)
+
         return dict(form = form)
 
     elif arg == 'delete':
@@ -179,11 +178,13 @@ def page():
 
     if arg == 'new':
         form = crud_page.create(t_page)
+
         return dict(form = form)
 
     elif arg == 'edit':
         page_id = request.args(1) or redirect(URL_INDEX_PAGE)
         form = crud_page.update(t_page, page_id, deletable=False)
+
         return dict(form = form)
 
     elif arg == 'delete':
@@ -205,6 +206,7 @@ def pages():
     page = t_page._db(t_page.url == '/%s'%request.args(0)).select().first() or redirect(URL_INDEX_PAGE)
     if not page.use_default_layout:
         response.view = '%s/%s.%s'%('default', 'pages_unstyled', request.extension)
+
     return dict(page = page)
 
 
