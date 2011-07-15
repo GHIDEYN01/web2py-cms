@@ -63,6 +63,19 @@ if not request.env.web2py_runtime_gae:
 else:
     mail.settings.server = 'gae'
 
+###########################################################################
+##
+## Setting the administrator to receive email notifications of CMS.
+##
+###########################################################################
+mail.settings.sender = config.admin_email
+
+
+###########################################################################
+##
+## Setting the configurations for module Auth.
+##
+###########################################################################
 auth.settings.hmac_key = 'sha512:09b3128b-337c-43ae-9f04-181b948a7004'   # before define_tables()
 auth.settings.mailer = mail                                              # for user email verification
 auth.settings.registration_requires_verification = False                 #TODO pegar do config
@@ -112,8 +125,17 @@ crud.settings.auth = None                      # =auth to enforce authorization 
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
+#TODO alterar referencias a estas variaveis para o objeto config
+BLOG_NAME = config.blog_name
+CONTACT_EMAIL = config.admin_email
+ADMIN_EMAIL = CONTACT_EMAIL 
 URL_INDEX_PAGE = URL(c='default', f='index')
 
+
+#########################################################################
+## Table Auth User
+##   Table that stores user data.
+#########################################################################
 auth.settings.table_user_name = 'auth_user'
 t_user = db.define_table(auth.settings.table_user_name,
     Field('first_name', length=128, default=''),
@@ -129,6 +151,22 @@ t_user = db.define_table(auth.settings.table_user_name,
 # Creating user tables, use email as login
 auth.define_tables(username=False)
 
+
+#########################################################################
+## Table Config
+##   Stores system settings such as:
+##
+##     - Blog Name;
+##     - Email Administrator;
+##     -
+##     - Approval for Comments;
+##     - Enable / Disable contact page;
+##     - Enable / Disable Login menu;
+##     - Enable / Disable user registration;
+##     - Favicon cms;
+##     - CSS mobile interface;
+##     - CSS cms;
+#########################################################################
 t_config = db.define_table('config',
     Field('blog_name', default = 'Bloog'),
     Field('admin_email'),
@@ -142,23 +180,37 @@ t_config = db.define_table('config',
     Field('css', 'text', default=""))
 config = get_config(config_table = t_config)
 
-mail.settings.sender = config.admin_email
 
-#TODO alterar referencias a estas variaveis para o objeto config
-BLOG_NAME = config.blog_name
-CONTACT_EMAIL = config.admin_email
-ADMIN_EMAIL = CONTACT_EMAIL 
-
+###########################################################################
+##
+## Table Menu
+##   Setting the menu list and link.
+##
+###########################################################################
 t_menu = db.define_table('menu',
     Field('name'),
     Field('link_to', default=''),)
 
+
+###########################################################################
+##
+## Table Page
+##   Storing the pages.
+##
+###########################################################################
 t_page = db.define_table('page',
     Field('url', label='URL (%s/your_url)'%URL(c='pages', f='read'), default="/myurl"),
     Field('use_default_layout', 'boolean', default = True),
     Field('title'),
     Field('body', 'text'),)
 
+
+###########################################################################
+##
+## Table Ppst
+##   Storing the posts for blog.
+##
+###########################################################################
 t_post = db.define_table('post',
     Field('title', default = ''),
     Field('post', 'text'),
@@ -166,6 +218,13 @@ t_post = db.define_table('post',
     Field('datetime', 'datetime', label='Post date', default = request.now),
     Field('permalink'))
 
+
+###########################################################################
+##
+## Table Comments
+##   Storing the comments.
+##
+###########################################################################
 t_post_comment = db.define_table('post_comment',
     Field('post', t_post),
     Field('unregistered_user_name', label=T('Your name')),
