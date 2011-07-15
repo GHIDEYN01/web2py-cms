@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*- 
+
 """
 Copyright (c) 2011 Lucas D'Avila - email lucassdvl@gmail.com / twitter @lucadavila
 
-This file is part of bloog.
+This file is part of web2py-cms.
 
-bloog is free software: you can redistribute it and/or modify
+web2py-cms is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License (LGPL v3) as published by
 the Free Software Foundation, on version 3 of the License.
 
@@ -25,6 +26,9 @@ def get_config(config_table):
 
 
 def get_confirmation_user(back, next, message='Confirm this ?', positive_option = 'Yes', negative_option = 'No'):
+    """Generate confirmation
+    for user.
+    """
     redirect(URL(c='default', f='dialog', args='confirm', vars=dict(back = back, next = next, message = message, positive_option = positive_option, negative_option = negative_option)))
 
 
