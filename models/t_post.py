@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*- 
+
 """
 Copyright (c) 2011 Lucas D'Avila - email lucassdvl@gmail.com / twitter @lucadavila
 
-This file is part of bloog.
+This file is part of web2py-cms.
 
-bloog is free software: you can redistribute it and/or modify
+web2py-cms is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License (LGPL v3) as published by
 the Free Software Foundation, on version 3 of the License.
 
-bloog is distributed in the hope that it will be useful,
+web2py-cms is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with bloog.  If not, see <http://www.gnu.org/licenses/>.
+along with web2py-cms.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 #crud table post
@@ -35,8 +36,8 @@ t_post.permalink.readable = False
 
 
 def set_permalink(post_id):
-    """Retorna o perma link para os posts
-    """
+    """Retorna o perma link para os posts"""
+
     import string
     safe = string.ascii_letters + string.digits + '_-'
     post = t_post[post_id]
