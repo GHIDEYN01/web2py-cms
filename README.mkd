@@ -12,7 +12,7 @@ criar uma plataforma que contèm o essencial de um CMS e Blog. Suas funcionalida
 
 Esse projeto é licenciado pelo LGPL v3. Mais informações, no arquivo LICENSE.
 
---
+-
 
 # Web2py-cms - CMS developed web2py
 
