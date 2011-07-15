@@ -2,34 +2,36 @@
 """
 Copyright (c) 2011 Lucas D'Avila - email lucassdvl@gmail.com / twitter @lucadavila
 
-This file is part of bloog.
+This file is part of web2py-cms.
 
-bloog is free software: you can redistribute it and/or modify
+web2py-cms is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License (LGPL v3) as published by
 the Free Software Foundation, on version 3 of the License.
 
-bloog is distributed in the hope that it will be useful,
+web2py-cms is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with bloog.  If not, see <http://www.gnu.org/licenses/>.
+along with web2py-cms.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 #########################################################################
 ## This scaffolding model makes your app work on Google App Engine too
 #########################################################################
 
-if request.env.web2py_runtime_gae:            # if running on Google App Engine
-    db = DAL('gae://bloog')             # connect to Google BigTable
-    session.connect(request, response, db = db) # and store sessions and tickets there
+if request.env.web2py_runtime_gae:                                 # if running on Google App Engine
+    db = DAL('gae://bloog')                                        # connect to Google BigTable
+    session.connect(request, response, db = db)                    # and store sessions and tickets there
+
     ### or use the following lines to store sessions in Memcache
     # from gluon.contrib.memdb import MEMDB
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
-else:                                         # else use a normal relational database
-    db = DAL('sqlite://bloog.sqlite')       # if not, use SQLite or other DB
+else:                                                              # else use a normal relational database
+    db = DAL('sqlite://bloog.sqlite')                              # if not, use SQLite or other DB
+
 ## if no need for session
 # session.forget()
 
@@ -50,26 +52,34 @@ crud = Crud(globals(),db)                      # for CRUD helpers using auth
 service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()
 
+# If the application is not running in an environment GAE (Google App Engine),
+# then use an SMTP server or conventional logging. 
+# Otherwise, use the standard used in the GAE.
 if not request.env.web2py_runtime_gae:
-    mail.settings.server = 'logging'
+    # mail.settings.server = 'logging'
+    mail.settings.server = 'smtp.email.com'
     mail.settings.tls = True
     mail.settings.login = 'youremail@site.com:pass'
 else:
     mail.settings.server = 'gae'
 
 auth.settings.hmac_key = 'sha512:09b3128b-337c-43ae-9f04-181b948a7004'   # before define_tables()
-auth.settings.mailer = mail                    # for user email verification
-auth.settings.registration_requires_verification = False #TODO pegar do config
-auth.settings.registration_requires_approval = False #TODO pegar do config
-auth.messages.verify_email = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['verify_email'])+'/%(key)s to verify your email' #TODO pegar do config
-auth.settings.reset_password_requires_verification = True #TODO pegar do config
-auth.messages.reset_password = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['reset_password'])+'/%(key)s to reset your password' #TODO pegar do config
+auth.settings.mailer = mail                                              # for user email verification
+auth.settings.registration_requires_verification = False                 #TODO pegar do config
+auth.settings.registration_requires_approval = False                     #TODO pegar do config
+auth.messages.verify_email = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['verify_email'])+'/%(key)s to verify your email'                        #TODO pegar do config
+auth.settings.reset_password_requires_verification = True                #TODO pegar do config
+auth.messages.reset_password = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['reset_password'])+'/%(key)s to reset your password'                    #TODO pegar do config
 
 def is_author():
+    """Checks whether the user is the type author."""
+
     return auth.has_membership(role='author', user_id = auth.user_id)
 auth.is_author = is_author
 
 def is_admin():
+    """Checks whether the user is administrator type."""
+
     return auth.has_membership(role='admin', user_id = auth.user_id)
 auth.is_admin = is_admin
 
@@ -115,6 +125,8 @@ t_user = db.define_table(auth.settings.table_user_name,
     Field('registration_key', length=512, writable=False, readable=False, default=''),
     Field('reset_password_key', length=512, writable=False, readable=False, default=''),
     Field('registration_id', length=512, writable=False, readable=False, default=''),)
+
+# Creating user tables, use email as login
 auth.define_tables(username=False)
 
 t_config = db.define_table('config',
