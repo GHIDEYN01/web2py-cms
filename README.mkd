@@ -1,0 +1,29 @@
+# web2py-cms - CMS desenvolvido em web2py
+
+web2py-cms é um blog e micro cms, desenvolvido com web2py(http://web2py.com) no intuito de aprender mais o framework como também
+criar uma plataforma que contèm o essencial de um CMS e Blog. Suas funcionalidades são:
+
+ - Cadastro de Posts;
+ - Cadastro de Páginas;
+ - Suporte a comentários;
+ - Suporte de imagens dos usuários usando Gravatar;
+ - Gerenciamento de Menus e Links;
+ - Suporte à plataforma Google App Engine.
+
+Esse projeto é licenciado pelo LGPL v3. Mais informações, no arquivo LICENSE.
+
+--
+
+# Web2py-cms - CMS developed web2py
+
+web2py-cms is a blog and micro cms, developed with web2py (http://web2py.com) in order to learn the framework as well
+create a platform that contains the essence of a CMS and Blog. Its features are:
+
+  - Register of Posts;
+  - Registration Page;
+  - Support for comments;
+  - Support for images using Gravatar of users;
+  - Management Menus and links;
+  - Support for Google App Engine platform.
+
+This project is licensed under LGPL v3. More information in the file LICENSE.
