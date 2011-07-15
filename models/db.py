@@ -22,7 +22,7 @@ along with web2py-cms.  If not, see <http://www.gnu.org/licenses/>.
 #########################################################################
 
 if request.env.web2py_runtime_gae:                                 # if running on Google App Engine
-    db = DAL('gae://bloog')                                        # connect to Google BigTable
+    db = DAL('gae://web2py_cms')                                        # connect to Google BigTable
     session.connect(request, response, db = db)                    # and store sessions and tickets there
 
     ### or use the following lines to store sessions in Memcache
@@ -30,7 +30,7 @@ if request.env.web2py_runtime_gae:                                 # if running 
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
 else:                                                              # else use a normal relational database
-    db = DAL('sqlite://bloog.sqlite')                              # if not, use SQLite or other DB
+    db = DAL('sqlite://web2py_cms.sqlite')                              # if not, use SQLite or other DB
 
 ## if no need for session
 # session.forget()
